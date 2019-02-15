@@ -7,26 +7,7 @@ if [ "$OS" != "Darwin" ] && [ "$OS" != "Linux" ]; then
     exit 1
 fi
 
-echo -n "Input which directory you want to put code (default:~/aos):"
-read OBJ_DIR
-if [ "${OBJ_DIR}" = "" ]; then
-    OBJ_DIR=${HOME}/aos
-fi
-
-echo "Object directory is ${OBJ_DIR}"
-if [ -d ${OBJ_DIR} ];then
-    echo -n "Object directory already exist，overwrite(Y/N)?:"
-    read -n 1 OVERWRITE
-    if [ "${OVERWRITE}" != "Y" ] && [ "${OVERWRITE}" != "y" ];then
-        exit 0
-    fi
-    rm -rf ${OBJ_DIR}
-fi
-mkdir -p ${OBJ_DIR}
-if [ $? -ne 0 ]; then
-    echo "error: create directory ${OBJ_DIR} failed"
-    exit 1
-fi
+OBJ_DIR=/home/alios
 
 echo ""
 echo -n "install dependent software packages ..."
@@ -89,7 +70,7 @@ else #Some Linux version
              pacman -S --needed gcc git wget make ncurses flex bison gperf unzip python2-pip > /dev/null
             PIP_CMD=pip2
         else
-            echo -e "\nerror: unknown package manerger\n"
+            echo -e "\error: unknown package manerger\n"
             exit 1
         fi
         TOOLCHAINS_URL="https://code.aliyun.com/vivid8710/aos-toolchain-linux32.git"
@@ -106,7 +87,7 @@ rm -rf ${OBJ_DIR}
 ALIOS_THINGS_URL="https://code.aliyun.com/vivid8710/AliOS-Things.git"
 #git clone -q ${ALIOS_THINGS_URL} ${OBJ_DIR}
 if [ $? -ne 0 ]; then
-    echo -e "\nerror: clone code failed\n"
+    echo -e "\error: clone code failed\n"
     exit 1
 fi
 #echo "done"
@@ -114,9 +95,11 @@ fi
 echo -n "installing toolchains ..."
 git clone -q ${TOOLCHAINS_URL} toolchain
 if [ $? -ne 0 ]; then
-    echo -e "\nerror: download toolchain failed\n"
+    echo -e "\error: download toolchain failed\n"
     exit 1
 fi
+
+mkdir -p ${OBJ_DIR}/build/
 mv toolchain/compiler ${OBJ_DIR}/build/
 rm -rf toolchain
 echo "done"
@@ -125,18 +108,20 @@ echo -n "installing OpenOCD ..."
 OPENOCD_URL="https://code.aliyun.com/vivid8710/aos-openocd.git"
 git clone -q ${OPENOCD_URL} openocd
 if [ $? -ne 0 ]; then
-    echo -e "\nerror: download OpenOCD failed\n"
+    echo -e "\error: download OpenOCD failed\n"
     exit 1
 fi
 mv openocd/OpenOCD ${OBJ_DIR}/build/
 rm -rf openocd
 echo "done"
 
+mkdir -p ${OBJ_DIR}/platform/mcu/esp8266/
+mkdir -p ${OBJ_DIR}/platform/mcu/esp32/
 echo -n "installing esptool ..."
 OPENOCD_URL="https://code.aliyun.com/vivid8710/aos-esptool.git"
 git clone -q ${OPENOCD_URL} esptool
 if [ $? -ne 0 ]; then
-    echo -e "\nerror: download esptool failed\n"
+    echo -e "\error: download esptool failed\n"
     exit 1
 fi
 cp -rf esptool/esptool_py ${OBJ_DIR}/platform/mcu/esp32/
@@ -144,4 +129,4 @@ mv esptool/esptool_py ${OBJ_DIR}/platform/mcu/esp8266/
 rm -rf esptool
 echo "done"
 
-echo "install finieshed!"
+echo "install finished!"
