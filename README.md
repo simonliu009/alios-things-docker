@@ -4,7 +4,7 @@ How To Use this repository
 
 1. Install && config docker first.
 
-2. Clone this repository
+2. Clone this repository<br>
 	`git clone https://github.com/simonliu009/alios-things-docker`<br> 
 	`cd alios-things-docker`
 
@@ -37,10 +37,9 @@ How To Use this repository
 4.  克隆 AliOS-Things 仓库并切换到仓库目录<br>
      
 	`git clone https://github.com/alibaba/AliOS-Things`<br>
-     Change directory to AliOS-Things<br>
 	`cd AliOS-Things`<br>
 
-5.如果你当前运行的是`powershell`，输入 `cmd`切换到命令行提示符<br>
+5. 如果你当前运行的是`powershell`，输入 `cmd`切换到命令行提示符<br>
 
 6. 运行容器并加载当前文件夹 <br>
         `docker run -it -v %cd%:/home/alios/AliOS-Things alios-things-docker`<br>
