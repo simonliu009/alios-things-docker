@@ -37,7 +37,7 @@ How To Use this repository
      
 	`git clone https://github.com/alibaba/AliOS-Things`
      Change directory to AliOS-Things
-	`cd AliOS-Things`
+	`cd AliOS-Things`<br>
 
 5.如果你当前运行的是`powershell`，输入 `cmd`切换到命令行提示符
 
